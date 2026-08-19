@@ -9,14 +9,18 @@ use App\Filament\Resources\Registers\Schemas\RegisterForm;
 use App\Filament\Resources\Registers\Tables\RegistersTable;
 use App\Models\Register;
 use BackedEnum;
+use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class RegisterResource extends Resource
 {
     protected static ?string $model = Register::class;
+
+    protected static bool $isScopedToTenant = false;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalculator;
 
@@ -32,6 +36,12 @@ class RegisterResource extends Resource
     public static function table(Table $table): Table
     {
         return RegistersTable::configure($table);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->whereHas('branch', fn (Builder $query) => $query->whereBelongsTo(Filament::getTenant()));
     }
 
     public static function getRelations(): array

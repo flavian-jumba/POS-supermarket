@@ -12,7 +12,7 @@
 
         @livewireStyles
     </head>
-    <body class="h-full bg-[#f8f9fa] text-[#171719] antialiased" data-pos-app>
+    <body class="h-full bg-[var(--pos-bg)] text-[var(--pos-text)] antialiased" data-pos-app>
         {{ $slot }}
 
         @livewireScripts

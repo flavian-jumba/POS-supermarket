@@ -1,4 +1,4 @@
-@props(['organizationName', 'branchName', 'registerName'])
+@props(['organizationName', 'branchName', 'registerName', 'cashierName'])
 
 <header class="flex h-16 shrink-0 items-center justify-between border-b border-[var(--pos-border)] bg-[var(--pos-surface)] px-8">
     <div class="flex items-center gap-3">
@@ -20,10 +20,13 @@
         <span class="h-5 w-px bg-[var(--pos-border)]"></span>
         <button
             type="button"
-            aria-label="Cashier profile"
-            class="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--pos-orange)] text-[var(--pos-orange)] transition hover:bg-orange-50"
+            aria-label="Cashier profile: {{ $cashierName }}"
+            class="flex h-9 items-center gap-2 rounded-full border border-[var(--pos-orange)] pr-3 pl-2 text-[var(--pos-orange)] transition hover:bg-[var(--pos-orange-soft)]"
         >
-            <x-heroicon-o-user class="h-4 w-4" />
+            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--pos-orange-soft)] text-xs font-bold">
+                {{ Illuminate\Support\Str::of($cashierName)->substr(0, 1)->upper() }}
+            </span>
+            <span class="max-w-[9rem] truncate text-sm font-medium">{{ $cashierName }}</span>
         </button>
     </div>
 </header>

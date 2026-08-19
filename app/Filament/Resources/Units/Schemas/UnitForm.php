@@ -2,7 +2,8 @@
 
 namespace App\Filament\Resources\Units\Schemas;
 
-use Filament\Forms\Components\Select;
+use Filament\Facades\Filament;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -16,11 +17,8 @@ class UnitForm
                 Section::make('Unit')
                     ->columns(3)
                     ->schema([
-                        Select::make('organization_id')
-                            ->relationship('organization', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->required(),
+                        Hidden::make('organization_id')
+                            ->default(fn (): ?int => Filament::getTenant()?->id),
                         TextInput::make('name')
                             ->required(),
                         TextInput::make('symbol')

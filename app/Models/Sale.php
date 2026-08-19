@@ -86,6 +86,11 @@ class Sale extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function mpesaTransactions(): HasMany
+    {
+        return $this->hasMany(MpesaTransaction::class);
+    }
+
     public function stockMovements(): MorphMany
     {
         return $this->morphMany(

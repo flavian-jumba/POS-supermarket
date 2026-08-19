@@ -1,15 +1,20 @@
 <div class="flex h-screen flex-col overflow-hidden">
-    <x-pos.header :organization-name="$organizationName" :branch-name="$branchName" :register-name="$registerName" />
+    <x-pos.header
+        :organization-name="$organizationName"
+        :branch-name="$branchName"
+        :register-name="$registerName"
+        :cashier-name="$cashierName"
+    />
 
     @if ($notice)
         <div
             x-data
             x-init="setTimeout(() => $wire.set('notice', null), 3500)"
             @class([
-                'border-b px-8 py-2 text-sm font-medium',
+                'pos-shadow-soft fixed top-20 right-8 z-50 max-w-sm rounded-xl border px-4 py-3 text-sm font-medium',
                 'border-red-200 bg-red-50 text-red-600' => $noticeType === 'error',
                 'border-green-200 bg-green-50 text-green-700' => $noticeType === 'success',
-                'border-[var(--pos-border)] bg-[var(--pos-border-soft)] text-[var(--pos-text-secondary)]' => $noticeType === 'info',
+                'border-[var(--pos-border)] bg-white text-[var(--pos-text-secondary)]' => $noticeType === 'info',
             ])
         >
             {{ $notice }}
@@ -54,7 +59,7 @@
                         <p class="text-sm text-[var(--pos-text-muted)]">Try another product name, SKU or barcode.</p>
                     </div>
                 @else
-                    <div class="grid grid-cols-3 gap-3">
+                    <div class="grid grid-cols-3 gap-4">
                         @foreach ($this->products as $product)
                             <x-pos.product-card :product="$product" wire:key="product-{{ $product['id'] }}" />
                         @endforeach
@@ -70,7 +75,7 @@
         </section>
 
         {{-- Right: current sale + payment --}}
-        <section class="flex min-h-0 flex-col overflow-y-auto px-8 py-2.5">
+        <section class="flex min-h-0 flex-col justify-between gap-4 overflow-y-auto px-8 py-2.5">
             <x-pos.cart
                 :cart="$cart"
                 :cart-count="$this->cartCount"
@@ -83,6 +88,9 @@
             <x-pos.payment-panel
                 :payment-method="$paymentMethod"
                 :customer-phone="$customerPhone"
+                :mpesa-status="$mpesaStatus"
+                :mpesa-reference="$mpesaReference"
+                :mpesa-available="$mpesaAvailable"
                 :total="$this->total"
             />
 

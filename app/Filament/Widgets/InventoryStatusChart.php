@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\InventoryLevel;
+use Filament\Facades\Filament;
 use Filament\Widgets\ChartWidget;
 
 class InventoryStatusChart extends ChartWidget
@@ -25,16 +26,21 @@ class InventoryStatusChart extends ChartWidget
      */
     protected function getData(): array
     {
+        $branchIds = Filament::getTenant()->branches()->pluck('id');
+
         $outOfStock = InventoryLevel::query()
+            ->whereIn('branch_id', $branchIds)
             ->where('quantity_on_hand', '<=', 0)
             ->count();
 
         $lowStock = InventoryLevel::query()
+            ->whereIn('branch_id', $branchIds)
             ->where('quantity_on_hand', '>', 0)
             ->whereColumn('quantity_on_hand', '<=', 'reorder_level')
             ->count();
 
         $inStock = InventoryLevel::query()
+            ->whereIn('branch_id', $branchIds)
             ->whereColumn('quantity_on_hand', '>', 'reorder_level')
             ->count();
 

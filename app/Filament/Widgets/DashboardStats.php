@@ -7,6 +7,7 @@ use App\Models\InventoryLevel;
 use App\Models\RegisterSession;
 use App\Models\Sale;
 use App\Models\SaleItem;
+use Filament\Facades\Filament;
 use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -26,12 +27,17 @@ class DashboardStats extends StatsOverviewWidget
      */
     protected function getStats(): array
     {
+        $organization = Filament::getTenant();
+        $branchIds = $organization->branches()->pluck('id');
+
         $todayRevenue = Sale::query()
+            ->whereBelongsTo($organization)
             ->where('status', 'completed')
             ->whereDate('sold_at', today())
             ->sum('total');
 
         $todayTransactions = Sale::query()
+            ->whereBelongsTo($organization)
             ->where('status', 'completed')
             ->whereDate('sold_at', today())
             ->count();
@@ -39,17 +45,20 @@ class DashboardStats extends StatsOverviewWidget
         $itemsSoldToday = SaleItem::query()
             ->whereHas('sale', function ($query): void {
                 $query
+                    ->whereBelongsTo(Filament::getTenant())
                     ->where('status', 'completed')
                     ->whereDate('sold_at', today());
             })
             ->sum('quantity');
 
         $lowStockProducts = InventoryLevel::query()
+            ->whereIn('branch_id', $branchIds)
             ->where('quantity_on_hand', '>', 0)
             ->whereColumn('quantity_on_hand', '<=', 'reorder_level')
             ->count();
 
         $openRegisters = RegisterSession::query()
+            ->whereHas('register.branch', fn ($query) => $query->whereBelongsTo($organization))
             ->where('status', 'open')
             ->count();
 

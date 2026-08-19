@@ -11,14 +11,14 @@
     ];
 @endphp
 
-<div class="mt-1.5 flex items-stretch gap-2.5">
+<div class="flex items-stretch gap-3">
     @foreach ($actions as $action)
         <button
             type="button"
             wire:click="placeholderAction('{{ $action['label'] }}')"
-            class="flex h-12 w-20 flex-col items-center justify-center gap-0.5 rounded-xl border border-[var(--pos-border)] bg-white text-[var(--pos-text-secondary)] transition hover:border-[var(--pos-orange)] hover:text-[var(--pos-orange)]"
+            class="flex h-12 w-24 shrink-0 flex-col items-center justify-center gap-1 rounded-xl border border-[var(--pos-border)] bg-white text-[var(--pos-text-secondary)] transition hover:border-[var(--pos-orange)] hover:text-[var(--pos-orange)]"
         >
-            <x-dynamic-component :component="'heroicon-o-'.$action['icon']" class="h-4.5 w-4.5" />
+            <x-dynamic-component :component="'heroicon-o-'.$action['icon']" class="h-5 w-5" />
             <span class="text-xs font-medium">{{ $action['label'] }}</span>
         </button>
     @endforeach
@@ -26,7 +26,7 @@
     <button
         type="button"
         wire:click="completeSale"
-        class="flex h-12 flex-1 items-center justify-center gap-3 rounded-xl bg-[var(--pos-orange)] text-white transition hover:bg-[var(--pos-orange-hover)] active:scale-[0.99]"
+        class="flex h-14 flex-1 items-center justify-center gap-3 rounded-xl bg-[var(--pos-orange)] text-white transition hover:bg-[var(--pos-orange-hover)] active:scale-[0.99]"
     >
         <x-heroicon-s-shopping-cart class="h-7 w-7" />
         <span class="text-left">

@@ -31,4 +31,9 @@ class OrganizationMembership extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function isAdminRole(): bool
+    {
+        return in_array($this->role, ['owner', 'admin', 'manager'], true);
+    }
 }

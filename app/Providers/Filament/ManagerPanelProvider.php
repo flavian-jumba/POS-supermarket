@@ -6,10 +6,14 @@ use App\Filament\Widgets\DashboardStats;
 use App\Filament\Widgets\InventoryStatusChart;
 use App\Filament\Widgets\PaymentsByMethodChart;
 use App\Filament\Widgets\SalesByDayChart;
+use App\Filament\Widgets\SetupChecklist;
+use App\Http\Middleware\RedirectIfOnboardingIncomplete;
+use App\Models\Organization;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -28,10 +32,16 @@ class ManagerPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('manager')
-            ->path('manager')
+            ->path('admin')
+            ->tenant(Organization::class, slugAttribute: 'slug')
             ->login()
             ->colors([
-                'primary' => Color::Green,
+                'primary' => Color::Orange,
+            ])
+            ->userMenuItems([
+                MenuItem::make()
+                    ->label('Open POS')
+                    ->url(fn (): string => route('admin.open-pos')),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
@@ -40,6 +50,7 @@ class ManagerPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
+                SetupChecklist::class,
                 DashboardStats::class,
                 SalesByDayChart::class,
                 PaymentsByMethodChart::class,
@@ -58,6 +69,14 @@ class ManagerPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->tenantMiddleware([
+                RedirectIfOnboardingIncomplete::class,
+            ], isPersistent: true)
+            ->tenantMenuItems([
+                MenuItem::make()
+                    ->label('Open POS')
+                    ->url(fn (): string => route('admin.open-pos')),
             ]);
     }
 }

@@ -17,6 +17,7 @@ class DemoOrganizationSeeder extends Seeder
                 'email' => 'hello@stanleymat.test',
                 'phone' => '+254700000000',
                 'status' => 'active',
+                'onboarding_completed_at' => now(),
             ]
         );
 

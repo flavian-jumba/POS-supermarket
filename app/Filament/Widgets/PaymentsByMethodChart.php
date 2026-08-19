@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Filament\Support\PosResourceUi;
 use App\Models\Payment;
+use Filament\Facades\Filament;
 use Filament\Widgets\ChartWidget;
 
 class PaymentsByMethodChart extends ChartWidget
@@ -28,6 +29,7 @@ class PaymentsByMethodChart extends ChartWidget
     {
         $totalsByMethod = Payment::query()
             ->selectRaw('method, SUM(amount) as revenue')
+            ->whereHas('sale', fn ($query) => $query->whereBelongsTo(Filament::getTenant()))
             ->where('status', 'completed')
             ->groupBy('method')
             ->orderBy('method')

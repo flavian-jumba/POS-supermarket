@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\Sale;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonPeriod;
+use Filament\Facades\Filament;
 use Filament\Widgets\ChartWidget;
 
 class SalesByDayChart extends ChartWidget
@@ -32,6 +33,7 @@ class SalesByDayChart extends ChartWidget
 
         $salesByDate = Sale::query()
             ->selectRaw('DATE(sold_at) as sale_date, SUM(total) as revenue')
+            ->whereBelongsTo(Filament::getTenant())
             ->where('status', 'completed')
             ->whereBetween('sold_at', [$startDate->startOfDay(), $endDate->endOfDay()])
             ->groupByRaw('DATE(sold_at)')

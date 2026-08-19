@@ -35,14 +35,15 @@
             </p>
         </div>
     @else
-        <div class="mt-2 flex text-xs font-medium uppercase tracking-wide text-[var(--pos-text-muted)]">
-            <span class="w-[46%]">Item</span>
+        <div class="mt-3 flex items-center px-1 text-xs font-medium uppercase tracking-wide text-[var(--pos-text-muted)]">
+            <span class="w-[44%]">Item</span>
             <span class="w-[18%]">Qty</span>
-            <span class="w-[15%]">Price</span>
-            <span class="w-[21%]">Total</span>
+            <span class="w-[14%]">Price</span>
+            <span class="w-[16%]">Total</span>
+            <span class="w-[8%]"></span>
         </div>
 
-        <div class="max-h-[230px] overflow-y-auto">
+        <div class="max-h-[230px] divide-y divide-[var(--pos-border-soft)] overflow-y-auto">
             @foreach ($cart as $item)
                 <x-pos.cart-item :item="$item" wire:key="cart-item-{{ $item['id'] }}" />
             @endforeach
@@ -67,7 +68,7 @@
 
         <div class="flex items-end justify-between">
             <span class="text-base font-bold text-[var(--pos-text)]">TOTAL</span>
-            <span class="text-[30px] font-bold leading-none text-[var(--pos-text)]">
+            <span class="text-[32px] font-extrabold leading-none text-[var(--pos-text)]">
                 {{ \App\Support\Currency::format($total) }}
             </span>
         </div>

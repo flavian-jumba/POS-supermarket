@@ -9,17 +9,18 @@
 }
 
 :root {
-    --pos-orange: #ff6500;
-    --pos-orange-hover: #ec5b00;
-    --pos-bg: #f8f9fa;
+    --pos-orange: #ff6200;
+    --pos-orange-hover: #e95a00;
+    --pos-orange-soft: #fff4ec;
+    --pos-bg: #f7f7f8;
     --pos-surface: #ffffff;
-    --pos-text: #171719;
-    --pos-text-secondary: #62646b;
+    --pos-text: #1b1b1d;
+    --pos-text-secondary: #666970;
     --pos-text-muted: #92959d;
-    --pos-border: #e5e6e8;
+    --pos-border: #e5e5e7;
     --pos-border-soft: #efeff1;
-    --pos-success: #22b938;
-    --pos-danger: #ef4444;
+    --pos-success: #20b63e;
+    --pos-danger: #e5484d;
 }
 
 .pos-shadow-soft {

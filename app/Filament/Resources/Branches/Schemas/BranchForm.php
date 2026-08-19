@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Branches\Schemas;
 
+use Filament\Facades\Filament;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -17,11 +19,8 @@ class BranchForm
                 Section::make('Branch')
                     ->columns(2)
                     ->schema([
-                        Select::make('organization_id')
-                            ->relationship('organization', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->required(),
+                        Hidden::make('organization_id')
+                            ->default(fn (): ?int => Filament::getTenant()?->id),
                         TextInput::make('name')
                             ->required(),
                         TextInput::make('code')

@@ -33,3 +33,16 @@ document.addEventListener('livewire:navigated', () => {
         focusScanner();
     }
 });
+
+document.addEventListener('livewire:init', () => {
+    if (!document.body.hasAttribute('data-pos-app')) {
+        return;
+    }
+
+    Livewire.on('pos-refocus-scanner', () => {
+        const input = document.querySelector('[data-pos-scanner]');
+        if (input) {
+            input.focus();
+        }
+    });
+});
