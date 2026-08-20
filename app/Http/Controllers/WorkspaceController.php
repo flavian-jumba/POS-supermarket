@@ -17,6 +17,11 @@ class WorkspaceController extends Controller
             ->whereHas('organization', fn ($query) => $query->where('status', 'active'))
             ->get();
 
+        if ($memberships->count() === 0) {
+            // No organizations - redirect to onboarding/setup recovery
+            return redirect()->route('onboarding.index');
+        }
+
         if ($memberships->count() === 1) {
             $workspace->select($memberships->first()->organization);
 

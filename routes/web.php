@@ -13,10 +13,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::middleware('guest')->group(function (): void {
-    Route::get('/register', [RegisterSupermarketController::class, 'create'])->name('register');
-    Route::post('/register', [RegisterSupermarketController::class, 'store'])->name('register.store');
+Route::get('/register', [RegisterSupermarketController::class, 'create'])->name('register');
+Route::post('/register', [RegisterSupermarketController::class, 'store'])->name('register.store');
 
+Route::middleware('guest')->group(function (): void {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
     Route::post('/login', [LoginController::class, 'store'])->name('login.store');
 });

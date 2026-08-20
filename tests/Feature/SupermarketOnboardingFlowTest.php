@@ -120,6 +120,12 @@ test('cashier redirects to register flow and resumes active session', function (
         ->assertSessionHas(Workspace::REGISTER_SESSION_KEY, $register->id);
 });
 
+test('Get Started button links to registration page', function () {
+    $this->get('/')
+        ->assertSee('Get Started')
+        ->assertSee(route('register'));
+});
+
 test('multiple organizations show workspace selector and single organization skips it', function () {
     $singleUser = User::factory()->create(['email' => 'single@example.test']);
     $singleOrganization = createOrganization('single', now()->toDateTimeString());
